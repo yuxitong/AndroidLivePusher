@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/AndroidLivePusher.iml" filepath="$PROJECT_DIR$/AndroidLivePusher.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/livepusher/livepusher.iml" filepath="$PROJECT_DIR$/livepusher/livepusher.iml" />
+    </modules>
+  </component>
+</project>
