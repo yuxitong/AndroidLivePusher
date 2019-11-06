@@ -16,7 +16,9 @@
 
 7：mp4录制
 
+8：FLV录制工具已经上传过段时间更新代码实现flv视频录制。
 
+另外，CSDN博客过来看FLV的朋友请点击[这里](https://github.com/yuxitong/AndroidLivePusher/blob/master/livepusher/src/main/java/com/yxt/livepusher/utils/FLV.java)
 
 
 后续如果有空就会添加 ffmpeg软编上述这些功能 和flv的录制。
