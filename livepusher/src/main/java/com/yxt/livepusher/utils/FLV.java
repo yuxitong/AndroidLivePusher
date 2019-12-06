@@ -1,4 +1,8 @@
-package com.yxt.livepusher.utils;
+﻿package com.yxt.livepusher.utils;
+
+import android.util.Log;
+
+import com.xiaozhenkeji.utils.jt794utils.RadixTransformationUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -21,7 +25,7 @@ public class FLV {
     private byte[] sps = new byte[0];
     private byte[] pps = new byte[0];
 
-    private static final byte[] splitElement = new byte[]{00, 00, 00, 01};
+    public static final byte[] splitElement = new byte[]{0x00, 0x00, 0x00, 0x01};
 
     private long pts = 0;
     private long sudioPts = 0;
@@ -129,7 +133,6 @@ public class FLV {
             baos.write(0x00);
             baos.write(0xAF);
             if (data.length < 10) {
-                System.out.println("小于10 了");
                 baos.write(0x00);
             } else {
                 baos.write(0x01);
@@ -177,25 +180,17 @@ public class FLV {
             // }
 
             byte[][] result = splitByte(data, splitElement);
-            System.out.println("长度" + result.length);
 
-            if (result.length == 1) {
-                System.out.println(
-                        "第五字段：" + toHexString1(result[0][4]) + "   " + (toHexString1(result[0][4]).equals("41")));
-            }
             if (sps.length == 0 || pps.length == 0) {
                 for (byte[] b : result) {
-                    System.out.println("第五字段：" + toHexString1(b[4]));
-                    System.out.println(toHexString1(b));
-                    switch (toHexString1(b[4])) {
-                        case "67":
+                    Log.e("radixradix", RadixTransformationUtils.toHexString40len(b));
+                    switch (b[4]) {
+                        case 103:
                             spsb = true;
-                            System.out.println("spsb");
                             sps = Arrays.copyOfRange(b, 4, b.length);
                             break;
-                        case "68":
+                        case 104:
                             ppsb = true;
-                            System.out.println("ppsb");
                             pps = Arrays.copyOfRange(b, 4, b.length);
                             break;
                     }
@@ -258,7 +253,8 @@ public class FLV {
 
                 for (int i = 0; i < result.length; i++) {
 
-                    if (toHexString1(result[i][4]).equals("65")) {
+                    if (result[i][4] == 101) {
+//                        Log.e("jt1078","65   "+result[i][4]);
                         baos.write(0x09);
                         baos.write(integerTo3Bytes(result[i].length + 5));
                         byte[] b = integerTo4Bytes((int) (System.currentTimeMillis() - pts));
@@ -293,7 +289,9 @@ public class FLV {
                         baos.write(bbDS[1]);
                         baos.write(bbDS[2]);
                         baos.write(bbDS[3]);
-                    } else if (toHexString1(result[i][4]).equals("41")) {
+                    } else if (result[i][4] == 65) {
+//                        Log.e("jt1078","41   "+result[i][4]);
+
                         // byte[] bb = integerTo4Bytes(len);
                         // baos.write(bb[0]);
                         // baos.write(bb[1]);
@@ -332,41 +330,45 @@ public class FLV {
                         baos.write(bbDS[1]);
                         baos.write(bbDS[2]);
                         baos.write(bbDS[3]);
-                    } else if (toHexString1(result[i][4]).equals("61")) {
-                        baos.write(0x09);
-                        baos.write(integerTo3Bytes(result[i].length + 5));
-                        byte[] b = integerTo4Bytes((int) (System.currentTimeMillis() - pts));
-
-                        baos.write(b[1]);
-                        baos.write(b[2]);
-                        baos.write(b[3]);
-                        baos.write(b[0]);
-
-                        baos.write(0x00);
-                        baos.write(0x00);
-                        baos.write(0x00);
-
-                        baos.write(0x27);
-                        baos.write(0x01);
-
-                        baos.write(0x00);
-                        baos.write(0x00);
-                        baos.write(0x00);
-
-                        byte[] bbb = integerTo4Bytes(result[i].length - 4);
-                        baos.write(bbb[0]);
-                        baos.write(bbb[1]);
-                        baos.write(bbb[2]);
-                        baos.write(bbb[3]);
-                        baos.write(Arrays.copyOfRange(result[i], 4, result[i].length));
-
-                        len = result[i].length + 16;
-                        byte[] bbDS = integerTo4Bytes(len);
-                        baos.write(bbDS[0]);
-                        baos.write(bbDS[1]);
-                        baos.write(bbDS[2]);
-                        baos.write(bbDS[3]);
+                    } else {
+//                        打印一下  result[i][4]
                     }
+//                    else if (toHexString1(result[i][4]).equals("61")) {
+////                        Log.e("jt1078","61   "+result[i][4]);
+//                        baos.write(0x09);
+//                        baos.write(integerTo3Bytes(result[i].length + 5));
+//                        byte[] b = integerTo4Bytes((int) (System.currentTimeMillis() - pts));
+//
+//                        baos.write(b[1]);
+//                        baos.write(b[2]);
+//                        baos.write(b[3]);
+//                        baos.write(b[0]);
+//
+//                        baos.write(0x00);
+//                        baos.write(0x00);
+//                        baos.write(0x00);
+//
+//                        baos.write(0x27);
+//                        baos.write(0x01);
+//
+//                        baos.write(0x00);
+//                        baos.write(0x00);
+//                        baos.write(0x00);
+//
+//                        byte[] bbb = integerTo4Bytes(result[i].length - 4);
+//                        baos.write(bbb[0]);
+//                        baos.write(bbb[1]);
+//                        baos.write(bbb[2]);
+//                        baos.write(bbb[3]);
+//                        baos.write(Arrays.copyOfRange(result[i], 4, result[i].length));
+//
+//                        len = result[i].length + 16;
+//                        byte[] bbDS = integerTo4Bytes(len);
+//                        baos.write(bbDS[0]);
+//                        baos.write(bbDS[1]);
+//                        baos.write(bbDS[2]);
+//                        baos.write(bbDS[3]);
+//                    }
 
                     // baos.write(integerTo4Bytes());
 
@@ -400,6 +402,24 @@ public class FLV {
         }
     }
 
+    public byte[] getSpsPPs() {
+        return concat(sps, pps);
+    }
+
+    public boolean isSpsPPs() {
+        return sps != null && sps.length != 0 && pps != null && pps.length != 0;
+    }
+
+    public static byte[] concat(byte[] first, byte[] second) {
+
+        byte[] result = Arrays.copyOf(first, first.length + second.length);
+
+        System.arraycopy(second, 0, result, first.length, second.length);
+
+        return result;
+
+    }
+
     // public static void main(String[] args) {
     // byte[] a = new byte[] { 0x01, 0x02, 0x03, 0x04, 0x05, 0x01, 0x02, 0x03,
     // 0x04, 0x05 };
@@ -412,11 +432,14 @@ public class FLV {
     // }
     //
     // }
-    private static byte[][] splitByte(byte[] src, byte[] splitElement) {
+    public static byte[][] splitByte(byte[] src, byte[] splitElement) {
         ArrayList<Integer> arr = new ArrayList<>();
         for (int i = 0; i < src.length - splitElement.length; i++) {
-            boolean isSplit = true;
+            boolean isSplit = false;
             for (int k = 0; k < splitElement.length; k++) {
+                if ((src[i + k] == splitElement[k]) && k == splitElement.length - 1) {
+                    isSplit = true;
+                }
                 if (src[i + k] != splitElement[k]) {
                     isSplit = false;
                     break;
@@ -427,7 +450,6 @@ public class FLV {
                 arr.add(i);
             }
         }
-//		System.out.println("拆分：" + arr.size());
         byte[][] by = new byte[arr.size()][];
         for (int i = 0; i < arr.size(); i++) {
             if (i + 1 < arr.size()) {
@@ -468,6 +490,67 @@ public class FLV {
             e.printStackTrace();
         }
         return baos.toByteArray();
+    }
+
+    public byte[] newStreamHead() {
+        if (sps == null || pps == null || sps.length == 0 || pps.length == 0) {
+            return null;
+        }
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        int len = 0;
+        try {
+            baos.write(flvHeader());
+            baos.write(0x09);
+
+            // 长度
+            baos.write(integerTo3Bytes(16 + sps.length + pps.length));
+
+            // 时间戳
+            baos.write(0x00);
+            baos.write(0x00);
+            baos.write(0x00);
+            baos.write(0x00);
+
+            // 通道固定 StreamID
+            baos.write(0x00);
+            baos.write(0x00);
+            baos.write(0x00);
+
+            baos.write(0x17);
+            baos.write(0x00);
+            baos.write(0x00);
+            baos.write(0x00);
+            baos.write(0x00);
+            pts = System.currentTimeMillis();
+            // version
+            baos.write(0x01);
+
+            baos.write(Arrays.copyOfRange(sps, 1, 4));
+
+            // baos.wait(sps[1]);
+            // baos.wait(sps[2]);
+            // baos.wait(sps[3]);
+            baos.write(0xFF);
+            baos.write(0xE1);
+            baos.write(integerTo2Bytes(sps.length));
+            baos.write(sps);
+            baos.write(01);
+            baos.write(integerTo2Bytes(pps.length));
+            baos.write(pps);
+            len = pps.length + sps.length + 23;
+            byte[] bb = integerTo4Bytes(len);
+            baos.write(bb[0]);
+            baos.write(bb[1]);
+            baos.write(bb[2]);
+            baos.write(bb[3]);
+            baos.flush();
+            baos.close();
+        } catch (IOException e) {
+        }
+
+        return baos.toByteArray();
+
+
     }
 
     private byte[] flvTagScript(int width, int height, int fps, int bitRate) {
@@ -697,7 +780,7 @@ public class FLV {
                     } else if (toHexString1(tagBody[8]).equals("01")) {
                         if (isWriteVadio && isWriteAudio && time >= startTime && time <= endTime) {
                             fos.write(tagHead);
-                            byte[] timeByte = integerTo4Bytes(time-timeGen);
+                            byte[] timeByte = integerTo4Bytes(time - timeGen);
                             tagBody[0] = timeByte[1];
                             tagBody[1] = timeByte[2];
                             tagBody[2] = timeByte[3];
@@ -723,7 +806,7 @@ public class FLV {
                     } else if (toHexString1(tagBody[8]).equals("01")) {
                         if (isWriteVadio && time >= startTime && time <= endTime) {
                             fos.write(tagHead);
-                            byte[] timeByte = integerTo4Bytes(time-timeGen);
+                            byte[] timeByte = integerTo4Bytes(time - timeGen);
                             tagBody[0] = timeByte[1];
                             tagBody[1] = timeByte[2];
                             tagBody[2] = timeByte[3];
