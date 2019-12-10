@@ -1,6 +1,7 @@
-
+﻿项目使用ndk版本为r14b编译 新版ndk会报错
 
 本项目是openGL+mediacodec硬编码摄像头数据，目前支持：
+
 
 1：rtmp推流
 
