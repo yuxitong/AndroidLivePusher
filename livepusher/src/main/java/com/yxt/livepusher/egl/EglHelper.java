@@ -17,7 +17,7 @@ public class EglHelper {
     private EGLSurface mEglSurface;
 
     private OnEGLContext onEGLContext;
-    public void initEgl(Surface surface, EGLContext eglContext) {
+    public void initEgl(Surface surface, EGLContext eglContext,int width,int height) {
         mEgl = (EGL10) EGLContext.getEGL();
         mEglDisplay = mEgl.eglGetDisplay(EGL10.EGL_DEFAULT_DISPLAY);
         if (mEglDisplay == EGL10.EGL_NO_DISPLAY)
@@ -63,7 +63,16 @@ public class EglHelper {
             onEGLContext.EGLContext(mEglContext);
         }
 
-        mEglSurface = mEgl.eglCreateWindowSurface(mEglDisplay, configs[0], surface, null);
+        if(surface==null){
+            int[] attrib_list1 = {
+                    EGL10.EGL_WIDTH,width,
+                    EGL10.EGL_HEIGHT,height,
+                    EGL10.EGL_NONE
+            };
+            mEglSurface =  mEgl.eglCreatePbufferSurface(mEglDisplay,configs[0],attrib_list1);
+        }else{
+            mEglSurface = mEgl.eglCreateWindowSurface(mEglDisplay, configs[0], surface, null);
+        }
 
         if (!mEgl.eglMakeCurrent(mEglDisplay, mEglSurface, mEglSurface, mEglContext))
             throw new RuntimeException("eglMakeCurrent failed");

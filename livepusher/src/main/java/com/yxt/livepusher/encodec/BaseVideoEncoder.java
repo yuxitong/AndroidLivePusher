@@ -235,7 +235,7 @@ public abstract class BaseVideoEncoder {
             isStart = false;
             object = new Object();
             eglHelper = new EglHelper();
-            eglHelper.initEgl(encoder.get().surface, encoder.get().eglContext);
+            eglHelper.initEgl(encoder.get().surface, encoder.get().eglContext,width,height);
 
             while (true) {
                 if (isExit) {

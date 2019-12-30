@@ -139,7 +139,7 @@ public abstract class YUEGLSurfaceView extends SurfaceView implements SurfaceHol
             isStart = false;
             object = new Object();
             eglHelper = new EglHelper();
-            eglHelper.initEgl(yuEglSurfaceViewWeakReference.get().mSurface, yuEglSurfaceViewWeakReference.get().mEglContext);
+            eglHelper.initEgl(yuEglSurfaceViewWeakReference.get().mSurface, yuEglSurfaceViewWeakReference.get().mEglContext,width,height);
             while (true) {
                 if (isExit) {
                     release();

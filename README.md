@@ -1,5 +1,7 @@
 ﻿项目使用ndk版本为r14b编译 新版ndk会报错
 
+感谢  [ywl5320](https://github.com/wanliyang1990)
+
 本项目是openGL+mediacodec硬编码摄像头数据，目前支持：
 
 
@@ -11,7 +13,7 @@
 
 4：从openGL中截图
 
-5：不预览摄像头获取摄像头数据
+5：不预览摄像头获取摄像头数据,支持不预览拍照和不预览录像，不预览推流
 
 6：可以使用MP4VideoExtractor 来分离mp4成aac+h264 进行推流
 
