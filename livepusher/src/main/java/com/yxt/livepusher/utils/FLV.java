@@ -1,8 +1,4 @@
-﻿package com.yxt.livepusher.utils;
-
-import android.util.Log;
-
-import com.xiaozhenkeji.utils.jt794utils.RadixTransformationUtils;
+package com.yxt.livepusher.utils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -183,7 +179,6 @@ public class FLV {
 
             if (sps.length == 0 || pps.length == 0) {
                 for (byte[] b : result) {
-                    Log.e("radixradix", RadixTransformationUtils.toHexString40len(b));
                     switch (b[4]) {
                         case 103:
                             spsb = true;
